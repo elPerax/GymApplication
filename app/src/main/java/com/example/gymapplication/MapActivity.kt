@@ -9,8 +9,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import org.json.JSONArray
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private lateinit var map: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +25,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-
         val btnBack = findViewById<Button>(R.id.btnBack)
         btnBack.setOnClickListener {
             finish()
@@ -28,13 +32,34 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        // Static workout spots
-        val spot1 = LatLng(45.5017, -73.5673) // Montreal
-        val spot2 = LatLng(45.5088, -73.5617) // Another nearby park
+        map = googleMap
+        loadWorkoutLocations()
+    }
 
-        googleMap.addMarker(MarkerOptions().position(spot1).title("Park Workout Spot"))
-        googleMap.addMarker(MarkerOptions().position(spot2).title("Outdoor Gym"))
+    private fun loadWorkoutLocations() {
+        try {
+            val inputStream = assets.open("workout_locations.json")
+            val json = inputStream.bufferedReader().use(BufferedReader::readText)
+            val locations = JSONArray(json)
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spot1, 14f))
+            for (i in 0 until locations.length()) {
+                val loc = locations.getJSONObject(i)
+                val name = loc.getString("name")
+                val lat = loc.getDouble("latitude")
+                val lng = loc.getDouble("longitude")
+
+                val position = LatLng(lat, lng)
+                map.addMarker(MarkerOptions().position(position).title(name))
+            }
+
+            if (locations.length() > 0) {
+                val first = locations.getJSONObject(0)
+                val start = LatLng(first.getDouble("latitude"), first.getDouble("longitude"))
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(start, 12f))
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
