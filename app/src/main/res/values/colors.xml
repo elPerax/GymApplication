@@ -5,4 +5,6 @@
     <color name="white_text">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="red_button">#D32F2F</color>
+    <color name="black">#000000</color>
+
 </resources>

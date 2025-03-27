@@ -1,5 +1,6 @@
 package com.example.gymapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -25,9 +27,26 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        val btnBack = findViewById<Button>(R.id.btnBack)
-        btnBack.setOnClickListener {
-            finish()
+
+
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.map_bottom_nav)
+        bottomNav.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_main -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    true
+                }
+                R.id.nav_back -> {
+                    finish()
+                    true
+                }
+                R.id.nav_exercises -> {
+                    startActivity(Intent(this, ExercisesActivity::class.java))
+                    true
+                }
+                else -> false
+            }
         }
     }
 

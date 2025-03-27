@@ -3,10 +3,10 @@ package com.example.gymapplication
 import Exercise
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ExercisesActivity : AppCompatActivity() {
 
@@ -22,9 +22,8 @@ class ExercisesActivity : AppCompatActivity() {
 
         val dbHelper = DatabaseHelper(this)
 
-        // Clean old duplicate data, once
-        //dbHelper.clearAllExercises()
-
+        // line to clean all duplicate data, once
+        // dbHelper.deleteAllExercises()
 
         dbHelper.insertExercise(
             Exercise(0, "Push-Up", "Upper body strength exercise", "pushup.mp4", "Upper Body", "Beginner", 60, "None", "pushup_thumb")
@@ -49,8 +48,24 @@ class ExercisesActivity : AppCompatActivity() {
 
         recyclerView.adapter = adapter
 
-        findViewById<Button>(R.id.btnBack).setOnClickListener {
-            finish()
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.exercise_bottom_nav)
+        bottomNav.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_main -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    true
+                }
+                R.id.nav_map -> {
+                    startActivity(Intent(this, MapActivity::class.java))
+                    true
+                }
+                R.id.nav_back -> {
+                    finish()
+                    true
+                }
+                else -> false
+            }
         }
     }
 }
