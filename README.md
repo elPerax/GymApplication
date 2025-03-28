@@ -1,5 +1,15 @@
-Gym application.
+Gym application
 
-Mobile developemnt(Android).
+Mobile developemnt(Android) using Kotlin.
 
-Description: Black, red, white themed application, it contains tutorials on how to do exercises to stay in shape. It also implements the API Google maps SDK for Android, it is used to show places where people can workout in the Montreal Metropolitan area.
+Description:
+This fitness-focused mobile application is designed with a black, red, and white theme. It provides video tutorials to help users learn how to perform exercises and stay in shape.
+The app also integrates the Google Maps SDK for Android, which displays workout locations across the Montreal Metropolitan area, such as parks and outdoor gyms.
+
+Features:
+-Exercise tutorials with video playback.
+-Custom Google Maps integration.
+-SQLite database for storing exercise details.
+-Clean UI with intuitive navigation.
+
+
